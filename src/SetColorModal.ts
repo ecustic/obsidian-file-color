@@ -50,12 +50,24 @@ export class SetColorModal extends Modal {
     this.close()
   }
 
-  createColorElement(parent: HTMLElement, color: string | undefined) {
+  createColorElement(
+    parent: HTMLElement,
+    color: string | undefined,
+    colorName: string
+  ) {
     const colorEl = parent.createEl('div')
-    colorEl.addClass(
-      'file-color-modal-color',
+    const colorCircleEl = colorEl.createEl('div')
+    const colorNameEl = colorEl.createEl('small')
+
+    colorCircleEl.addClass(
+      'file-color-modal-color-circle',
       `file-color-color-${color || 'none'}`
     )
+
+    colorNameEl.addClass('file-color-modal-color-name')
+    colorNameEl.innerText = colorName
+
+    colorEl.addClass('file-color-modal-color')
 
     if (this.selectedColor === color) {
       colorEl.addClass('selected')
@@ -78,10 +90,10 @@ export class SetColorModal extends Modal {
       cls: 'file-color-modal-colors',
     })
 
-    this.createColorElement(colorPicker, undefined)
+    this.createColorElement(colorPicker, undefined, 'None')
 
     for (const color of this.plugin.settings.palette) {
-      this.createColorElement(colorPicker, color.id)
+      this.createColorElement(colorPicker, color.id, color.name)
     }
   }
 

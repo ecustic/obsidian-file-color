@@ -5,9 +5,16 @@
 }
 
 .file-color-modal .file-color-modal-colors .file-color-modal-color {
-  display: block;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   margin: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-color-modal .file-color-modal-colors .file-color-modal-color-circle {
+  display: block;
   width: 32px;
   height: 32px;
   border-style: solid;
@@ -16,17 +23,35 @@
   background-color: var(--file-color-color);
 }
 
+.file-color-modal .file-color-modal-colors .file-color-modal-color-name {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+}
+
 .file-color-modal .file-color-modal-colors .file-color-color-none {
   border-style: dashed;
   border-color: var(--color-base-40);
   background-color: transparent;
 }
 
-.file-color-modal .file-color-modal-colors .file-color-modal-color.selected {
+.file-color-modal .file-color-modal-colors .file-color-modal-color.selected .file-color-modal-color-circle {
   border-color: var(--color-base-70);
 }
 
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file,
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file {
   color: var(--file-color-color);
+}
+
+.file-color-settings-panel .setting-item.file-color-color-setting .setting-item-info {
+  display: none;
+}
+
+.file-color-settings-panel .setting-item.file-color-color-setting .setting-item-control {
+  justify-content: space-between;
+}
+
+.file-color-settings-panel .setting-item.file-color-color-setting .setting-item-control input[type='text'] {
+  flex: 1;
 }
