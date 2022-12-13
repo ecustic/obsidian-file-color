@@ -14,8 +14,13 @@ export class FileColorSettingTab extends PluginSettingTab {
     const { containerEl } = this
 
     containerEl.empty()
+    containerEl.addClass('file-color-settings-panel')
 
     containerEl.createEl('h2', { text: 'Palette' })
+
+    if (this.plugin.settings.palette.length < 1) {
+      containerEl.createEl('span').setText('No colors in the palette')
+    }
 
     for (
       let colorIndex = 0;
@@ -23,9 +28,15 @@ export class FileColorSettingTab extends PluginSettingTab {
       colorIndex++
     ) {
       const color = this.plugin.settings.palette[colorIndex]
-      new Setting(containerEl)
-        .setName('Color #' + (colorIndex + 1))
-        .setDesc(color.id)
+      const setting = new Setting(containerEl)
+        .addColorPicker((colorValue) =>
+          colorValue.setValue(color.value).onChange(async (value) => {
+            color.value = value
+            await this.plugin.saveSettings()
+            await this.plugin.generateColorStyles()
+            await this.plugin.applyColorStyles()
+          })
+        )
         .addText((text) =>
           text
             .setValue(color.name)
@@ -35,16 +46,8 @@ export class FileColorSettingTab extends PluginSettingTab {
               await this.plugin.saveSettings()
             })
         )
-        .addColorPicker((colorValue) =>
-          colorValue.setValue(color.value).onChange(async (value) => {
-            color.value = value
-            await this.plugin.saveSettings()
-            await this.plugin.generateColorStyles()
-            await this.plugin.applyColorStyles()
-          })
-        )
         .addButton((removeButton) => {
-          removeButton.setButtonText('Remove').onClick(async () => {
+          removeButton.onClick(async () => {
             this.plugin.settings.palette.splice(colorIndex, 1)
             this.plugin.settings.fileColors =
               this.plugin.settings.fileColors.filter(
@@ -56,11 +59,14 @@ export class FileColorSettingTab extends PluginSettingTab {
             await this.plugin.generateColorStyles()
             await this.plugin.applyColorStyles()
           })
+          removeButton.setIcon('trash-2')
         })
+
+      setting.controlEl.parentElement?.addClass('file-color-color-setting')
     }
 
     new Setting(containerEl).addButton((addButton) => {
-      addButton.setButtonText('Add color').onClick(async () => {
+      addButton.onClick(async () => {
         this.plugin.settings.palette.push({
           id: nanoid(),
           name: '',
@@ -71,6 +77,7 @@ export class FileColorSettingTab extends PluginSettingTab {
         await this.plugin.generateColorStyles()
         await this.plugin.applyColorStyles()
       })
+      addButton.setIcon('plus-circle')
     })
   }
 }
