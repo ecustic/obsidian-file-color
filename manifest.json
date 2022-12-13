@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "An Obsidian plugin for setting colors on folders and files in the file tree.",
-	"author": "Obsidian",
+	"author": "ecustic",
 	"authorUrl": "https://github.com/ecustic",
 	"fundingUrl": "https://www.buymeacoffee.com/ecustic",
 	"isDesktopOnly": false
