@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-file-color",
 	"name": "File Color",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"minAppVersion": "0.15.0",
 	"description": "An Obsidian plugin for setting colors on folders and files in the file tree.",
 	"author": "ecustic",
