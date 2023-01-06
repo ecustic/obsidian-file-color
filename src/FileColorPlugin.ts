@@ -59,7 +59,15 @@ export class FileColorPlugin extends Plugin {
     this.addSettingTab(new FileColorSettingTab(this.app, this))
   }
 
-  onunload() {}
+  onunload() {
+    const colorStyleEl = this.app.workspace.containerEl.querySelector(
+      '#fileColorPluginStyles'
+    )
+
+    if (colorStyleEl) {
+      colorStyleEl.remove();
+    }
+  }
 
   async loadSettings() {
     this.settings = Object.assign({}, defaultSettings, await this.loadData())
