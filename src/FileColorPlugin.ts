@@ -37,9 +37,9 @@ export class FileColorPlugin extends Plugin {
     this.registerEvent(
       this.app.vault.on('rename', async (newFile, oldPath) => {
         this.settings.fileColors
-          .filter((fileColor) => fileColor.path.startsWith(oldPath))
+          .filter((fileColor) => fileColor.path === oldPath)
           .forEach((fileColor) => {
-            fileColor.path = fileColor.path.replace(oldPath, newFile.path)
+            fileColor.path = newFile.path
           })
         await this.saveSettings()
         await this.applyColorStyles()
