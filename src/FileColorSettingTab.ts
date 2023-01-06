@@ -32,9 +32,9 @@ export class FileColorSettingTab extends PluginSettingTab {
         .addColorPicker((colorValue) =>
           colorValue.setValue(color.value).onChange(async (value) => {
             color.value = value
-            await this.plugin.saveSettings()
-            await this.plugin.generateColorStyles()
-            await this.plugin.applyColorStyles()
+            this.plugin.saveSettings()
+            this.plugin.generateColorStyles()
+            this.plugin.applyColorStyles()
           })
         )
         .addText((text) =>
@@ -43,7 +43,7 @@ export class FileColorSettingTab extends PluginSettingTab {
             .setPlaceholder('Color name')
             .onChange(async (value) => {
               color.name = value
-              await this.plugin.saveSettings()
+              this.plugin.saveSettings()
             })
         )
         .addButton((removeButton) => {
@@ -55,9 +55,9 @@ export class FileColorSettingTab extends PluginSettingTab {
               )
 
             this.display()
-            await this.plugin.saveSettings()
-            await this.plugin.generateColorStyles()
-            await this.plugin.applyColorStyles()
+            this.plugin.saveSettings()
+            this.plugin.generateColorStyles()
+            this.plugin.applyColorStyles()
           })
           removeButton.setIcon('trash-2')
         })
@@ -73,9 +73,9 @@ export class FileColorSettingTab extends PluginSettingTab {
           value: '#ffffff',
         })
         this.display()
-        await this.plugin.saveSettings()
-        await this.plugin.generateColorStyles()
-        await this.plugin.applyColorStyles()
+        this.plugin.saveSettings()
+        this.plugin.generateColorStyles()
+        this.plugin.applyColorStyles()
       })
       addButton.setIcon('plus-circle')
     })

@@ -1,4 +1,4 @@
-import { MenuItem, Plugin } from 'obsidian'
+import { debounce, MenuItem, Plugin } from 'obsidian'
 import { SetColorModal } from 'SetColorModal'
 import { FileColorSettingTab } from 'FileColorSettingTab'
 
@@ -7,6 +7,7 @@ import { defaultSettings } from 'settings'
 
 export class FileColorPlugin extends Plugin {
   settings: FileColorPluginSettings
+  saveSettingsInternalDebounced = debounce(this.saveSettingsInternal, 3000, true);
 
   async onload() {
     await this.loadSettings()
@@ -26,8 +27,8 @@ export class FileColorPlugin extends Plugin {
     )
 
     this.app.workspace.onLayoutReady(async () => {
-      await this.generateColorStyles()
-      await this.applyColorStyles()
+      this.generateColorStyles()
+      this.applyColorStyles()
     })
 
     this.registerEvent(
@@ -41,8 +42,8 @@ export class FileColorPlugin extends Plugin {
           .forEach((fileColor) => {
             fileColor.path = newFile.path
           })
-        await this.saveSettings()
-        await this.applyColorStyles()
+        this.saveSettings()
+        this.applyColorStyles()
       })
     )
 
@@ -51,8 +52,7 @@ export class FileColorPlugin extends Plugin {
         this.settings.fileColors = this.settings.fileColors.filter(
           (fileColor) => !fileColor.path.startsWith(file.path)
         )
-        await this.saveSettings()
-        await this.applyColorStyles()
+        this.saveSettings()
       })
     )
 
@@ -73,11 +73,18 @@ export class FileColorPlugin extends Plugin {
     this.settings = Object.assign({}, defaultSettings, await this.loadData())
   }
 
-  async saveSettings() {
-    await this.saveData(this.settings)
+  async saveSettings(immediate?: boolean) {
+    if (immediate) {
+      return this.saveSettingsInternal();
+    }
+    return this.saveSettingsInternalDebounced();
   }
 
-  async generateColorStyles() {
+  private saveSettingsInternal() {
+    return this.saveData(this.settings)
+  }
+
+  generateColorStyles() {
     let colorStyleEl = this.app.workspace.containerEl.querySelector(
       '#fileColorPluginStyles'
     )
@@ -94,8 +101,9 @@ export class FileColorPlugin extends Plugin {
       )
       .join('\n')
   }
+  applyColorStyles = debounce(this.applyColorStylesInternal, 50, true);
 
-  async applyColorStyles() {
+  private applyColorStylesInternal() {
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
     fileExplorers.forEach((fileExplorer) => {
       Object.entries(fileExplorer.view.fileItems).forEach(

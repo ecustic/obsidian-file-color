@@ -25,8 +25,8 @@ export class SetColorModal extends Modal {
     if (!this.selectedColor) {
       if (file) {
         this.plugin.settings.fileColors.splice(fileIndex, 1)
-        await this.plugin.saveSettings()
-        await this.plugin.applyColorStyles()
+        this.plugin.saveSettings()
+        this.plugin.applyColorStyles()
         this.close()
       }
       return
@@ -34,8 +34,8 @@ export class SetColorModal extends Modal {
 
     if (file) {
       file.color = this.selectedColor
-      await this.plugin.saveSettings()
-      await this.plugin.applyColorStyles()
+      this.plugin.saveSettings()
+      this.plugin.applyColorStyles()
       this.close()
       return
     }
@@ -45,8 +45,8 @@ export class SetColorModal extends Modal {
       color: this.selectedColor,
     })
 
-    await this.plugin.saveSettings()
-    await this.plugin.applyColorStyles()
+    this.plugin.saveSettings()
+    this.plugin.applyColorStyles()
     this.close()
   }
 
