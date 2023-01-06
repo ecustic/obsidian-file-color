@@ -1,6 +1,6 @@
 # Obsidian File Color
 
-<img src="./docs/images/hero-rounded.png" />
+![Obsidian File Color Banner](./docs/images/hero-rounded.png)
 
 ## What is this?
 This is a plugin for [Obsidian](https://obsidian.md), which allows you to select colors for your files and folders in the file explorer.
