@@ -1,6 +1,6 @@
 import { debounce, MenuItem, Plugin } from 'obsidian'
-import { SetColorModal } from 'SetColorModal'
-import { FileColorSettingTab } from 'FileColorSettingTab'
+import { SetColorModal } from 'plugin/SetColorModal'
+import { FileColorSettingTab } from 'plugin/FileColorSettingTab'
 
 import type { FileColorPluginSettings } from 'settings'
 import { defaultSettings } from 'settings'
@@ -18,7 +18,7 @@ export class FileColorPlugin extends Plugin {
           item.setTitle('Set color')
           item.setIcon('palette')
           item.onClick(() => {
-            new SetColorModal(this, file.path).open()
+            new SetColorModal(this, file).open()
           })
         }
 
@@ -111,6 +111,7 @@ export class FileColorPlugin extends Plugin {
           const itemClasses = fileItem.titleEl.classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
+            console.log(this.settings.fileColors)
           const file = this.settings.fileColors.find(
             (file) => file.path === path
           )
