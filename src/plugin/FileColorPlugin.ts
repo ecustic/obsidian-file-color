@@ -1,12 +1,12 @@
 import { debounce, MenuItem, Plugin } from 'obsidian'
-import { SetColorModal } from 'SetColorModal'
-import { FileColorSettingTab } from 'FileColorSettingTab'
+import { SetColorModal } from 'plugin/SetColorModal'
+import { FileColorSettingTab } from 'plugin/FileColorSettingTab'
 
 import type { FileColorPluginSettings } from 'settings'
 import { defaultSettings } from 'settings'
 
 export class FileColorPlugin extends Plugin {
-  settings: FileColorPluginSettings
+  settings: FileColorPluginSettings = defaultSettings
   saveSettingsInternalDebounced = debounce(this.saveSettingsInternal, 3000, true);
 
   async onload() {
@@ -18,7 +18,7 @@ export class FileColorPlugin extends Plugin {
           item.setTitle('Set color')
           item.setIcon('palette')
           item.onClick(() => {
-            new SetColorModal(this, file.path).open()
+            new SetColorModal(this, file).open()
           })
         }
 
@@ -60,13 +60,8 @@ export class FileColorPlugin extends Plugin {
   }
 
   onunload() {
-    const colorStyleEl = this.app.workspace.containerEl.querySelector(
-      '#fileColorPluginStyles'
-    )
-
-    if (colorStyleEl) {
-      colorStyleEl.remove();
-    }
+    document.getElementById('fileColorPluginStyles')?.remove();
+    document.getElementById('fileColorPluginGooberStyles')?.remove();
   }
 
   async loadSettings() {
@@ -85,9 +80,7 @@ export class FileColorPlugin extends Plugin {
   }
 
   generateColorStyles() {
-    let colorStyleEl = this.app.workspace.containerEl.querySelector(
-      '#fileColorPluginStyles'
-    )
+    let colorStyleEl = document.getElementById('fileColorPluginStyles')
 
     if (!colorStyleEl) {
       colorStyleEl = this.app.workspace.containerEl.createEl('style')

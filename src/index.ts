@@ -1,3 +1,2 @@
-import { FileColorPlugin } from './FileColorPlugin'
-
+import { FileColorPlugin } from './plugin/FileColorPlugin'
 export default FileColorPlugin
