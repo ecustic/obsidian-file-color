@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import { styled } from 'config/styles';
 
-export const Button = styled.button`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+export const Button = styled('button')({
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 
-  .svg-icon + * {
-    margin-left: 8px;
-  }
-`
+  '.svg-icon + *': {
+    marginLeft: '8px',
+  },
+})

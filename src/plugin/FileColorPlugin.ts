@@ -6,7 +6,7 @@ import type { FileColorPluginSettings } from 'settings'
 import { defaultSettings } from 'settings'
 
 export class FileColorPlugin extends Plugin {
-  settings: FileColorPluginSettings
+  settings: FileColorPluginSettings = defaultSettings
   saveSettingsInternalDebounced = debounce(this.saveSettingsInternal, 3000, true);
 
   async onload() {
@@ -60,13 +60,8 @@ export class FileColorPlugin extends Plugin {
   }
 
   onunload() {
-    const colorStyleEl = this.app.workspace.containerEl.querySelector(
-      '#fileColorPluginStyles'
-    )
-
-    if (colorStyleEl) {
-      colorStyleEl.remove();
-    }
+    document.getElementById('fileColorPluginStyles')?.remove();
+    document.getElementById('fileColorPluginGooberStyles')?.remove();
   }
 
   async loadSettings() {
@@ -85,9 +80,7 @@ export class FileColorPlugin extends Plugin {
   }
 
   generateColorStyles() {
-    let colorStyleEl = this.app.workspace.containerEl.querySelector(
-      '#fileColorPluginStyles'
-    )
+    let colorStyleEl = document.getElementById('fileColorPluginStyles')
 
     if (!colorStyleEl) {
       colorStyleEl = this.app.workspace.containerEl.createEl('style')
@@ -111,7 +104,6 @@ export class FileColorPlugin extends Plugin {
           const itemClasses = fileItem.titleEl.classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
-            console.log(this.settings.fileColors)
           const file = this.settings.fileColors.find(
             (file) => file.path === path
           )

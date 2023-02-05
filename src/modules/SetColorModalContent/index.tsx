@@ -1,13 +1,19 @@
+import React from 'react'
 import { useFile } from 'hooks/useFile'
 import { useModal } from 'hooks/useModal'
 import { usePlugin } from 'hooks/usePlugin'
-import React from 'react'
+import { Color } from './Color'
+import { ColorCell } from './ColorCell'
+import { ColorGrid } from './ColorGrid'
+import { ColorName } from './ColorName'
 
 export const SetColorModalContent = () => {
   const plugin = usePlugin()
   const { path } = useFile()
-  const modal = useModal();
-  const selectedColor = plugin.settings.fileColors.find((file) => file.path === path)?.color
+  const modal = useModal()
+  const selectedColor = plugin.settings.fileColors.find(
+    (file) => file.path === path
+  )?.color
 
   const handleSelectColor = (color: string | undefined) => {
     const fileIndex = plugin.settings.fileColors.findIndex(
@@ -38,28 +44,20 @@ export const SetColorModalContent = () => {
   }
 
   return (
-    <div className="file-color-modal-colors">
-      <div
-        onClick={() => handleSelectColor(undefined)}
-        className={`file-color-modal-color${!selectedColor ? ' selected' : ''}`}
-      >
-        <div
-          className={`file-color-modal-color-circle file-color-color-none`}
-        ></div>
-        <small className="file-color-modal-color-name">None</small>
-      </div>
+    <ColorGrid>
+      <ColorCell onClick={() => handleSelectColor(undefined)}>
+        <Color selected={!selectedColor} />
+        <ColorName>None</ColorName>
+      </ColorCell>
       {plugin.settings.palette.map((color) => (
-        <div
-          key={color.id}
-          onClick={() => handleSelectColor(color.id)}
-          className={`file-color-modal-color${selectedColor === color.id ? ' selected' : ''}`}
-        >
-          <div
-            className={`file-color-modal-color-circle file-color-color-${color.id}`}
-          ></div>
-          <small className="file-color-modal-color-name">{color.name}</small>
-        </div>
+        <ColorCell key={color.id} onClick={() => handleSelectColor(color.id)}>
+          <Color
+            selected={selectedColor === color.id}
+            className={`file-color-color-${color.id}`}
+          />
+          <ColorName>{color.name}</ColorName>
+        </ColorCell>
       ))}
-    </div>
+    </ColorGrid>
   )
 }

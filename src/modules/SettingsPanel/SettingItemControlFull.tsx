@@ -1,6 +1,7 @@
-import { SettingItemControl as Control } from "components/SettingItem";
-import styled from "styled-components";
+import { SettingItemControl } from "components/SettingItem";
+import { styled } from 'config/styles';
 
-export const SettingItemControlFull = styled(Control)`
+export const SettingItemControlFull = styled(SettingItemControl)`
   justify-content: space-between;
 `
+

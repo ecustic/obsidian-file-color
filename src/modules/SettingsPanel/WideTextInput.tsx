@@ -1,9 +1,6 @@
-import styled from "styled-components";
-import { SettingItemControlFull } from "./SettingItemControlFull";
+import { styled } from 'config/styles';
 
-export const WideTextInput = styled.input`
-  .file-color-settings-panel ${SettingItemControlFull} & {
-    display: flex;
-    flex: 1;
-  }
+export const WideTextInput = styled('input')`
+  display: flex;
+  flex: 1;
 `

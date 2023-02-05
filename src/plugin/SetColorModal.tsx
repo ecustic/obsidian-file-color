@@ -10,7 +10,7 @@ import { ModalContext } from 'hooks/useModal';
 export class SetColorModal extends Modal {
   plugin: FileColorPlugin
   file: TAbstractFile
-  root: Root;
+  root?: Root;
 
   constructor(plugin: FileColorPlugin, file: TAbstractFile) {
     super(plugin.app)
@@ -35,6 +35,6 @@ export class SetColorModal extends Modal {
   }
 
   onClose(): void {
-    this.root.unmount();
+    this.root?.unmount();
   }
 }
