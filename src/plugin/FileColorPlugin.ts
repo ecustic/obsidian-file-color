@@ -101,7 +101,7 @@ export class FileColorPlugin extends Plugin {
     fileExplorers.forEach((fileExplorer) => {
       Object.entries(fileExplorer.view.fileItems).forEach(
         ([path, fileItem]) => {
-          const itemClasses = fileItem.titleEl.classList.value
+          const itemClasses = fileItem.selfEl.classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
           const file = this.settings.fileColors.find(
@@ -113,7 +113,7 @@ export class FileColorPlugin extends Plugin {
             itemClasses.push('file-color-color-' + file.color)
           }
 
-          fileItem.titleEl.classList.value = itemClasses.join(' ')
+          fileItem.selfEl.classList.value = itemClasses.join(' ')
         }
       )
     })
