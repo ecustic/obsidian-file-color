@@ -7,8 +7,10 @@ import React, { useEffect, useState } from 'react'
 import type { FileColorPluginSettings } from 'settings'
 import {
   SettingItem,
+  SettingItemName,
   SettingItemControl,
   SettingItemInfo,
+  SettingItemDescription
 } from 'components/SettingItem'
 import { SettingItemControlFull } from './SettingItemControlFull'
 import { WideTextInput } from './WideTextInput'
@@ -19,6 +21,9 @@ export const SettingsPanel = () => {
   const plugin = usePlugin()
   const [palette, setPalette] = useState<FileColorPluginSettings['palette']>(
     plugin.settings.palette
+  )
+  const [inheritColors, setInheritColors] = useState<FileColorPluginSettings['inheritColors']>(
+    plugin.settings.inheritColors
   )
   const [changed, setChanged] = useState<boolean>(false)
 
@@ -98,6 +103,13 @@ export const SettingsPanel = () => {
     setChanged(false)
   }
 
+  const onChangeInheritColors = () => {
+    setInheritColors(!inheritColors)
+    plugin.settings.inheritColors = !plugin.settings.inheritColors
+    plugin.saveSettings()
+    plugin.applyColorStyles()
+  }
+
   return (
     <div className="file-color-settings-panel">
       <h2>Palette</h2>
@@ -133,7 +145,7 @@ export const SettingsPanel = () => {
       {changed && (
         <SettingItem className="file-color-settings-save">
           <SettingItemInfo>
-            <span className="mod-warning">You have unsaved changes.</span>
+            <span className="mod-warning">You have unsaved palette changes.</span>
           </SettingItemInfo>
           <SettingItemControl>
             <Button onClick={onRevert}>Revert changes</Button>
@@ -141,6 +153,22 @@ export const SettingsPanel = () => {
           </SettingItemControl>
         </SettingItem>
       )}
+
+      <h2>Options</h2>
+      <SettingItem className='mod-toggle'>
+        <SettingItemInfo>
+          <SettingItemName>Color Inheritance</SettingItemName>
+          <SettingItemDescription>Sub-folders and notes inherit colors from parents unless their colors are explicitly set.</SettingItemDescription>
+        </SettingItemInfo>
+       
+        <SettingItemControl>
+          <div className={'checkbox-container'+(inheritColors?' is-enabled':'')} onClick={onChangeInheritColors}>
+            <input type='checkbox'></input>
+          </div>
+        </SettingItemControl>
+      </SettingItem>
+
+      
     </div>
   )
 }

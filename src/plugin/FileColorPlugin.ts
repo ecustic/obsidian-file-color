@@ -104,9 +104,24 @@ export class FileColorPlugin extends Plugin {
           const itemClasses = fileItem.selfEl.classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
-          const file = this.settings.fileColors.find(
-            (file) => file.path === path
-          )
+
+          let file
+          if (this.settings.inheritColors) {
+            file = this.settings.fileColors.filter(
+              (file) => path.startsWith(file.path)
+            ).sort((fileA, fileB) => {
+              // Get the longest matching path (deeper paths have color priority)
+              if (fileA.path.length === fileB.path.length) {
+                return 0
+              }
+  
+              return fileA.path.length < fileB.path.length ? 1 : -1
+            }).shift() // filter() makes a copy, so we're not changing settings
+          } else {
+            file = this.settings.fileColors.find(
+              (file) => file.path === path
+            )
+          }
 
           if (file) {
             itemClasses.push('file-color-file')
