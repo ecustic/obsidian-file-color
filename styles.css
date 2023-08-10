@@ -1,3 +1,4 @@
+/* TEXT COLORING */
 /* These are applied when "inherit" is turned off -- only for individual items */
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file.file-color-type-text,
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file.file-color-type-text,
@@ -9,6 +10,7 @@
   color: var(--file-color-color);
 }
 
+/* BACKGROUND COLORING */
 /* These are applied when "inherit" is turned off -- only for individual items */
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file.file-color-type-background,
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file.file-color-type-background,
@@ -19,7 +21,8 @@
   background-color: var(--file-color-color);
 }
 
-/* When inheritance turned on with background, each section looks better with rounded corners */
+/* When inheritance turned on with background, each section looks better with rounded corners.
+   They are not rounded above with individual items because that appears to be styled by individual themes already, and we don't want to override them. */
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder.file-color-file.file-color-type-background {
   border-radius: 5px;
 }
