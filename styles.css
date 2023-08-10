@@ -18,3 +18,8 @@
 {
   background-color: var(--file-color-color);
 }
+
+/* When inheritance turned on with background, each section looks better with rounded corners */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder.file-color-file.file-color-type-background {
+  border-radius: 5px;
+}
