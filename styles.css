@@ -24,5 +24,5 @@
 /* When inheritance turned on with background, each section looks better with rounded corners.
    They are not rounded above with individual items because that appears to be styled by individual themes already, and we don't want to override them. */
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder.file-color-file.file-color-type-background {
-  border-radius: 5px;
+  border-radius: var(--radius-s);
 }
