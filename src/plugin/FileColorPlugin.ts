@@ -97,40 +97,51 @@ export class FileColorPlugin extends Plugin {
   applyColorStyles = debounce(this.applyColorStylesInternal, 50, true);
 
   private applyColorStylesInternal() {
+    // If inheriting colors, the "el" element will include a folder and all its sub-items.
+    // Otherwise, selfEl will color only itself, whether folder or note
+    let elementType = this.settings.inheritColors ? 'el' : 'selfEl',
+      cssType = this.settings.colorBackground ? 'background' : 'text'
+
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
     fileExplorers.forEach((fileExplorer) => {
       Object.entries(fileExplorer.view.fileItems).forEach(
         ([path, fileItem]) => {
-          const itemClasses = fileItem.selfEl.classList.value
+          const itemClasses = fileItem[elementType].classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
 
-          let file
-          if (this.settings.inheritColors) {
-            file = this.settings.fileColors.filter(
-              (file) => path.startsWith(file.path)
-            ).sort((fileA, fileB) => {
-              // Get the longest matching path (deeper paths have color priority)
-              if (fileA.path.length === fileB.path.length) {
-                return 0
-              }
-  
-              return fileA.path.length < fileB.path.length ? 1 : -1
-            }).shift() // filter() makes a copy, so we're not changing settings
-          } else {
-            file = this.settings.fileColors.find(
-              (file) => file.path === path
-            )
-          }
+          let file = this.settings.fileColors.find(
+            (file) => file.path === path
+          )
 
           if (file) {
             itemClasses.push('file-color-file')
             itemClasses.push('file-color-color-' + file.color)
+            itemClasses.push('file-color-type-' + cssType)
           }
 
-          fileItem.selfEl.classList.value = itemClasses.join(' ')
+          fileItem[elementType].classList.value = itemClasses.join(' ')
         }
       )
+    })
+  }
+
+  /**
+   * Clears color style classes from all elements we can possibly color.
+   */
+  clearStyles() {
+    const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
+    fileExplorers.forEach((fileExplorer) => {
+      Object.entries(fileExplorer.view.fileItems).forEach(
+        ([path, fileItem]) => {
+          ['el', 'selfEl'].forEach(elementType => {
+            const itemClasses = fileItem[elementType].classList.value
+                .split(' ')
+                .filter((cls) => !cls.startsWith('file-color'))
+
+              fileItem[elementType].classList.value = itemClasses.join(' ')
+            })
+       })
     })
   }
 }

@@ -25,6 +25,9 @@ export const SettingsPanel = () => {
   const [inheritColors, setInheritColors] = useState<FileColorPluginSettings['inheritColors']>(
     plugin.settings.inheritColors
   )
+  const [colorBackground, setColorBackground] = useState<FileColorPluginSettings['colorBackground']>(
+    plugin.settings.colorBackground
+  )
   const [changed, setChanged] = useState<boolean>(false)
 
   useEffect(() => {
@@ -107,6 +110,15 @@ export const SettingsPanel = () => {
     setInheritColors(!inheritColors)
     plugin.settings.inheritColors = !plugin.settings.inheritColors
     plugin.saveSettings()
+    plugin.clearStyles()
+    plugin.applyColorStyles()
+  }
+
+  const onChangeColorBackground = () => {
+    setColorBackground(!colorBackground)
+    plugin.settings.colorBackground = !plugin.settings.colorBackground
+    plugin.saveSettings()
+    plugin.clearStyles()
     plugin.applyColorStyles()
   }
 
@@ -163,6 +175,19 @@ export const SettingsPanel = () => {
        
         <SettingItemControl>
           <div className={'checkbox-container'+(inheritColors?' is-enabled':'')} onClick={onChangeInheritColors}>
+            <input type='checkbox'></input>
+          </div>
+        </SettingItemControl>
+      </SettingItem>
+
+      <SettingItem className='mod-toggle'>
+        <SettingItemInfo>
+          <SettingItemName>Color Background</SettingItemName>
+          <SettingItemDescription>Color the background instead of the text.</SettingItemDescription>
+        </SettingItemInfo>
+       
+        <SettingItemControl>
+          <div className={'checkbox-container'+(colorBackground?' is-enabled':'')} onClick={onChangeColorBackground}>
             <input type='checkbox'></input>
           </div>
         </SettingItemControl>

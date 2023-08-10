@@ -1,4 +1,20 @@
-.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file,
-.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file {
+/* These are applied when "inherit" is turned off -- only for individual items */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file.file-color-type-text,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file.file-color-type-text,
+/* These are applied when "inherit" is turned on -- applies to the whole folder tree */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder.file-color-file.file-color-type-text .nav-folder-title,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder.file-color-file.file-color-type-text .nav-file-title,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file.file-color-file.file-color-type-text .nav-file-title /* for top-level notes */
+{
   color: var(--file-color-color);
+}
+
+/* These are applied when "inherit" is turned off -- only for individual items */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file.file-color-type-background,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file.file-color-type-background,
+/* These are applied when "inherit" is turned on -- applies to the whole folder tree */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder.file-color-file.file-color-type-background,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file.file-color-file.file-color-type-background
+{
+  background-color: var(--file-color-color);
 }
