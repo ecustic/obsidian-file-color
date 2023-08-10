@@ -17,6 +17,11 @@ To add colors to the palette open the plugin settings, and click the `+` button.
 
 ![Adding a color](./docs/images/add-color-rounded.gif)
 
+### Options
+
+- Color Inheritance: if turned on, sub-folders and notes inherit colors from parents. Set colors on children folders/notes to override parents.
+- Color Background: if turned on, the background is colored instead of the text.
+
 ## Compatibility
 
 This plugin has been tested with a few other community plugins:
