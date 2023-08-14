@@ -110,7 +110,6 @@ export const SettingsPanel = () => {
     setInheritColors(!inheritColors)
     plugin.settings.inheritColors = !plugin.settings.inheritColors
     plugin.saveSettings()
-    plugin.clearStyles()
     plugin.applyColorStyles()
   }
 
@@ -118,7 +117,6 @@ export const SettingsPanel = () => {
     setColorBackground(!colorBackground)
     plugin.settings.colorBackground = !plugin.settings.colorBackground
     plugin.saveSettings()
-    plugin.clearStyles()
     plugin.applyColorStyles()
   }
 

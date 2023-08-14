@@ -99,14 +99,13 @@ export class FileColorPlugin extends Plugin {
   private applyColorStylesInternal() {
     // If inheriting colors, the "el" element will include a folder and all its sub-items.
     // Otherwise, selfEl will color only itself, whether folder or note
-    let elementType = this.settings.inheritColors ? 'el' : 'selfEl',
-      cssType = this.settings.colorBackground ? 'background' : 'text'
+    let cssType = this.settings.colorBackground ? 'background' : 'text'
 
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
     fileExplorers.forEach((fileExplorer) => {
       Object.entries(fileExplorer.view.fileItems).forEach(
         ([path, fileItem]) => {
-          const itemClasses = fileItem[elementType].classList.value
+          const itemClasses = fileItem.el.classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
 
@@ -118,30 +117,15 @@ export class FileColorPlugin extends Plugin {
             itemClasses.push('file-color-file')
             itemClasses.push('file-color-color-' + file.color)
             itemClasses.push('file-color-type-' + cssType)
+            if (this.settings.inheritColors) {
+              itemClasses.push('file-color-cascade')
+            }
           }
 
-          fileItem[elementType].classList.value = itemClasses.join(' ')
+          fileItem.el.classList.value = itemClasses.join(' ')
         }
       )
     })
   }
 
-  /**
-   * Clears color style classes from all elements we can possibly color.
-   */
-  clearStyles() {
-    const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
-    fileExplorers.forEach((fileExplorer) => {
-      Object.entries(fileExplorer.view.fileItems).forEach(
-        ([path, fileItem]) => {
-          ['el', 'selfEl'].forEach(elementType => {
-            const itemClasses = fileItem[elementType].classList.value
-                .split(' ')
-                .filter((cls) => !cls.startsWith('file-color'))
-
-              fileItem[elementType].classList.value = itemClasses.join(' ')
-            })
-       })
-    })
-  }
 }
