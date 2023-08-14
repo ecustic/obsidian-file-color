@@ -1,5 +1,5 @@
 export type FileColorPluginSettings = {
-  inheritColors: boolean
+  cascadeColors: boolean
   colorBackground: boolean
   palette: Array<{
     id: string
@@ -13,7 +13,7 @@ export type FileColorPluginSettings = {
 }
 
 export const defaultSettings: FileColorPluginSettings = {
-  inheritColors: false,
+  cascadeColors: false,
   colorBackground: false,
   palette: [],
   fileColors: [],

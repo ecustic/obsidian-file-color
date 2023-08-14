@@ -19,8 +19,8 @@ To add colors to the palette open the plugin settings, and click the `+` button.
 
 ### Options
 
-- Color Inheritance: if turned on, sub-folders and notes inherit colors from parents. Set colors on children folders/notes to override parents.
-- Color Background: if turned on, the background is colored instead of the text.
+- Cascade Colors: if turned on, colors on folders will cascade to their children. Set colors on children to override parents.
+- Background COlors: if turned on, the background is colored instead of the text.
 
 ## Compatibility
 

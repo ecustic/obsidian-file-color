@@ -22,8 +22,8 @@ export const SettingsPanel = () => {
   const [palette, setPalette] = useState<FileColorPluginSettings['palette']>(
     plugin.settings.palette
   )
-  const [inheritColors, setInheritColors] = useState<FileColorPluginSettings['inheritColors']>(
-    plugin.settings.inheritColors
+  const [cascadeColors, setCascadeColors] = useState<FileColorPluginSettings['cascadeColors']>(
+    plugin.settings.cascadeColors
   )
   const [colorBackground, setColorBackground] = useState<FileColorPluginSettings['colorBackground']>(
     plugin.settings.colorBackground
@@ -106,9 +106,9 @@ export const SettingsPanel = () => {
     setChanged(false)
   }
 
-  const onChangeInheritColors = () => {
-    setInheritColors(!inheritColors)
-    plugin.settings.inheritColors = !plugin.settings.inheritColors
+  const onChangeCascadeColors = () => {
+    setCascadeColors(!cascadeColors)
+    plugin.settings.cascadeColors = !plugin.settings.cascadeColors
     plugin.saveSettings()
     plugin.applyColorStyles()
   }
@@ -167,12 +167,12 @@ export const SettingsPanel = () => {
       <h2>Options</h2>
       <SettingItem className='mod-toggle'>
         <SettingItemInfo>
-          <SettingItemName>Color Inheritance</SettingItemName>
-          <SettingItemDescription>Sub-folders and notes inherit colors from parents unless their colors are explicitly set.</SettingItemDescription>
+          <SettingItemName>Cascade Colors</SettingItemName>
+          <SettingItemDescription>Folders will cascade their colors to sub-folders and notes, unless their colors are explicitly set.</SettingItemDescription>
         </SettingItemInfo>
        
         <SettingItemControl>
-          <div className={'checkbox-container'+(inheritColors?' is-enabled':'')} onClick={onChangeInheritColors}>
+          <div className={'checkbox-container'+(cascadeColors?' is-enabled':'')} onClick={onChangeCascadeColors}>
             <input type='checkbox'></input>
           </div>
         </SettingItemControl>

@@ -97,8 +97,6 @@ export class FileColorPlugin extends Plugin {
   applyColorStyles = debounce(this.applyColorStylesInternal, 50, true);
 
   private applyColorStylesInternal() {
-    // If inheriting colors, the "el" element will include a folder and all its sub-items.
-    // Otherwise, selfEl will color only itself, whether folder or note
     let cssType = this.settings.colorBackground ? 'background' : 'text'
 
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
@@ -117,7 +115,7 @@ export class FileColorPlugin extends Plugin {
             itemClasses.push('file-color-file')
             itemClasses.push('file-color-color-' + file.color)
             itemClasses.push('file-color-type-' + cssType)
-            if (this.settings.inheritColors) {
+            if (this.settings.cascadeColors) {
               itemClasses.push('file-color-cascade')
             }
           }
