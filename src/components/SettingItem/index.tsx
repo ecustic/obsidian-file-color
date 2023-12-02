@@ -25,3 +25,9 @@ export const SettingItemInfo = ({
 }: HTMLProps<HTMLDivElement>) => (
   <div className={`setting-item-info${className ? ' ' + className : ''}`} {...props} />
 )
+export const SettingItemDescription = ({
+  className,
+  ...props
+}: HTMLProps<HTMLDivElement>) => (
+  <div className={`setting-item-description${className ? ' ' + className : ''}`} {...props} />
+)

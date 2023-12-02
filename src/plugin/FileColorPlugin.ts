@@ -97,25 +97,33 @@ export class FileColorPlugin extends Plugin {
   applyColorStyles = debounce(this.applyColorStylesInternal, 50, true);
 
   private applyColorStylesInternal() {
+    let cssType = this.settings.colorBackground ? 'background' : 'text'
+
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
     fileExplorers.forEach((fileExplorer) => {
       Object.entries(fileExplorer.view.fileItems).forEach(
         ([path, fileItem]) => {
-          const itemClasses = fileItem.selfEl.classList.value
+          const itemClasses = fileItem.el.classList.value
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
-          const file = this.settings.fileColors.find(
+
+          let file = this.settings.fileColors.find(
             (file) => file.path === path
           )
 
           if (file) {
             itemClasses.push('file-color-file')
             itemClasses.push('file-color-color-' + file.color)
+            itemClasses.push('file-color-type-' + cssType)
+            if (this.settings.cascadeColors) {
+              itemClasses.push('file-color-cascade')
+            }
           }
 
-          fileItem.selfEl.classList.value = itemClasses.join(' ')
+          fileItem.el.classList.value = itemClasses.join(' ')
         }
       )
     })
   }
+
 }
