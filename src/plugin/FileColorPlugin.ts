@@ -97,7 +97,7 @@ export class FileColorPlugin extends Plugin {
   applyColorStyles = debounce(this.applyColorStylesInternal, 50, true);
 
   private applyColorStylesInternal() {
-    let cssType = this.settings.colorBackground ? 'background' : 'text'
+    const cssType = this.settings.colorBackground ? 'background' : 'text'
 
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
     fileExplorers.forEach((fileExplorer) => {
@@ -107,7 +107,7 @@ export class FileColorPlugin extends Plugin {
             .split(' ')
             .filter((cls) => !cls.startsWith('file-color'))
 
-          let file = this.settings.fileColors.find(
+            const file = this.settings.fileColors.find(
             (file) => file.path === path
           )
 
