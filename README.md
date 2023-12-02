@@ -20,7 +20,7 @@ To add colors to the palette open the plugin settings, and click the `+` button.
 ### Options
 
 - Cascade Colors: if turned on, colors on folders will cascade to their children. Set colors on children to override parents.
-- Background COlors: if turned on, the background is colored instead of the text.
+- Background Colors: if turned on, the background is colored instead of the text.
 
 ## Compatibility
 
