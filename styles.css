@@ -16,12 +16,12 @@
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background > .nav-folder-title,
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background > .nav-file-title
 {
-  background-color: var(--file-color-color);
+  background-color: color-mix(in srgb, var(--file-color-color) 15%, transparent);
 }
 
 /* BACKGROUND COLORING, WITH CASCADE */
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background.file-color-cascade .nav-folder-title,
 .workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background.file-color-cascade .nav-file-title
 {
-  background-color: var(--file-color-color);
+  background-color: color-mix(in srgb, var(--file-color-color) 15%, transparent);
 }
