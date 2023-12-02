@@ -7,8 +7,10 @@ import React, { useEffect, useState } from 'react'
 import type { FileColorPluginSettings } from 'settings'
 import {
   SettingItem,
+  SettingItemName,
   SettingItemControl,
   SettingItemInfo,
+  SettingItemDescription
 } from 'components/SettingItem'
 import { SettingItemControlFull } from './SettingItemControlFull'
 import { WideTextInput } from './WideTextInput'
@@ -19,6 +21,12 @@ export const SettingsPanel = () => {
   const plugin = usePlugin()
   const [palette, setPalette] = useState<FileColorPluginSettings['palette']>(
     plugin.settings.palette
+  )
+  const [cascadeColors, setCascadeColors] = useState<FileColorPluginSettings['cascadeColors']>(
+    plugin.settings.cascadeColors
+  )
+  const [colorBackground, setColorBackground] = useState<FileColorPluginSettings['colorBackground']>(
+    plugin.settings.colorBackground
   )
   const [changed, setChanged] = useState<boolean>(false)
 
@@ -98,6 +106,20 @@ export const SettingsPanel = () => {
     setChanged(false)
   }
 
+  const onChangeCascadeColors = () => {
+    setCascadeColors(!cascadeColors)
+    plugin.settings.cascadeColors = !plugin.settings.cascadeColors
+    plugin.saveSettings()
+    plugin.applyColorStyles()
+  }
+
+  const onChangeColorBackground = () => {
+    setColorBackground(!colorBackground)
+    plugin.settings.colorBackground = !plugin.settings.colorBackground
+    plugin.saveSettings()
+    plugin.applyColorStyles()
+  }
+
   return (
     <div className="file-color-settings-panel">
       <h2>Palette</h2>
@@ -133,7 +155,7 @@ export const SettingsPanel = () => {
       {changed && (
         <SettingItem className="file-color-settings-save">
           <SettingItemInfo>
-            <span className="mod-warning">You have unsaved changes.</span>
+            <span className="mod-warning">You have unsaved palette changes.</span>
           </SettingItemInfo>
           <SettingItemControl>
             <Button onClick={onRevert}>Revert changes</Button>
@@ -141,6 +163,35 @@ export const SettingsPanel = () => {
           </SettingItemControl>
         </SettingItem>
       )}
+
+      <h2>Options</h2>
+      <SettingItem className='mod-toggle'>
+        <SettingItemInfo>
+          <SettingItemName>Cascade Colors</SettingItemName>
+          <SettingItemDescription>Folders will cascade their colors to sub-folders and notes, unless their colors are explicitly set.</SettingItemDescription>
+        </SettingItemInfo>
+       
+        <SettingItemControl>
+          <div className={'checkbox-container'+(cascadeColors?' is-enabled':'')} onClick={onChangeCascadeColors}>
+            <input type='checkbox'></input>
+          </div>
+        </SettingItemControl>
+      </SettingItem>
+
+      <SettingItem className='mod-toggle'>
+        <SettingItemInfo>
+          <SettingItemName>Color Background</SettingItemName>
+          <SettingItemDescription>Color the background instead of the text.</SettingItemDescription>
+        </SettingItemInfo>
+       
+        <SettingItemControl>
+          <div className={'checkbox-container'+(colorBackground?' is-enabled':'')} onClick={onChangeColorBackground}>
+            <input type='checkbox'></input>
+          </div>
+        </SettingItemControl>
+      </SettingItem>
+
+      
     </div>
   )
 }

@@ -1,4 +1,27 @@
-.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-folder-title.file-color-file,
-.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .nav-file-title.file-color-file {
+/* TEXT COLORING, NO CASCADE */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-text > .nav-folder-title,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-text > .nav-file-title
+{
   color: var(--file-color-color);
+}
+
+/* TEXT COLORING, WITH CASCADE */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-text.file-color-cascade .nav-folder-title,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-text.file-color-cascade .nav-file-title
+{
+  color: var(--file-color-color);
+}
+
+/* BACKGROUND COLORING, NO CASCADE */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background > .nav-folder-title,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background > .nav-file-title
+{
+  background-color: color-mix(in srgb, var(--file-color-color) 15%, transparent);
+}
+
+/* BACKGROUND COLORING, WITH CASCADE */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background.file-color-cascade .nav-folder-title,
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container .file-color-file.file-color-type-background.file-color-cascade .nav-file-title
+{
+  background-color: color-mix(in srgb, var(--file-color-color) 15%, transparent);
 }

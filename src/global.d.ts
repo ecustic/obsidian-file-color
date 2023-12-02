@@ -14,7 +14,8 @@ interface ExplorerView extends View {
   fileItems: Record<
     string,
     {
-      selfEl: HTMLDivElement
+      selfEl: HTMLDivElement,
+      el: HTMLDivElement,
     }
   >
 }
