@@ -32,7 +32,10 @@ export class FileColorPlugin extends Plugin {
     })
 
     this.registerEvent(
-      this.app.workspace.on('layout-change', () => this.applyColorStyles())
+      this.app.workspace.on('layout-change', () => {
+        this.generateColorStyles();
+        this.applyColorStyles();
+      })
     )
 
     this.registerEvent(
