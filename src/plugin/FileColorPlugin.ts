@@ -101,6 +101,8 @@ export class FileColorPlugin extends Plugin {
 
     const fileExplorers = this.app.workspace.getLeavesOfType('file-explorer')
     fileExplorers.forEach((fileExplorer) => {
+      if (!fileExplorer.view.fileItems) return
+
       Object.entries(fileExplorer.view.fileItems).forEach(
         ([path, fileItem]) => {
           const itemClasses = fileItem.el.classList.value
