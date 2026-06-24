@@ -25,3 +25,58 @@
 {
   background-color: color-mix(in srgb, var(--file-color-color) 15%, transparent);
 }
+
+
+/* Compatibility with themes that style the visible file explorer label via .tree-item-inner */
+
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text > .tree-item-self {
+  --nav-item-color: var(--file-color-color);
+  --nav-item-color-hover: var(--file-color-color);
+  --nav-item-color-active: var(--file-color-color);
+  --nav-item-color-selected: var(--file-color-color);
+
+  --focus-text-color-hover: var(--file-color-color);
+  --focus-text-color-active: var(--file-color-color);
+  --focus-color-hover: var(--file-color-color);
+  --focus-color-active: var(--file-color-color);
+}
+
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text > .tree-item-self > .tree-item-inner,
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text > .tree-item-self > .nav-folder-title-content,
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text > .tree-item-self > .nav-file-title-content {
+  color: var(--file-color-color);
+}
+
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text.file-color-cascade .tree-item-self {
+  --nav-item-color: var(--file-color-color);
+  --nav-item-color-hover: var(--file-color-color);
+  --nav-item-color-active: var(--file-color-color);
+  --nav-item-color-selected: var(--file-color-color);
+
+  --focus-text-color-hover: var(--file-color-color);
+  --focus-text-color-active: var(--file-color-color);
+  --focus-color-hover: var(--file-color-color);
+  --focus-color-active: var(--file-color-color);
+}
+
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text.file-color-cascade .tree-item-self > .tree-item-inner,
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text.file-color-cascade .tree-item-self > .nav-folder-title-content,
+.workspace-leaf-content[data-type="file-explorer"]
+.nav-files-container
+.file-color-file.file-color-type-text.file-color-cascade .tree-item-self > .nav-file-title-content {
+  color: var(--file-color-color);
+}
