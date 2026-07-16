@@ -1,6 +1,7 @@
-import { debounce, MenuItem, Plugin } from 'obsidian'
+import { debounce, FileView, MenuItem, Plugin, TFile } from 'obsidian'
 import { SetColorModal } from 'plugin/SetColorModal'
 import { FileColorSettingTab } from 'plugin/FileColorSettingTab'
+import type { VerticalTabsAPI } from 'obsidian-vertical-tabs-api'
 
 import type { FileColorPluginSettings } from 'settings'
 import { defaultSettings } from 'settings'
@@ -124,6 +125,33 @@ export class FileColorPlugin extends Plugin {
         }
       )
     })
+
+    window.withVT?.((api: VerticalTabsAPI) => {
+      api.getAllLeafIds().forEach((tabId) => {
+        const file = this.getOpenFileOfLeaf(tabId);
+        if (!file) return;
+        const colorId = this.settings.fileColors.find(
+          (fileColor) => fileColor.path === file.path
+        )?.color;
+        if (!colorId) return;
+        const color = this.settings.palette.find(
+          (color) => color.id === colorId
+        )?.value;
+        if (!color) return;
+        api.setTabColor(tabId, color);
+      })
+    })
   }
 
+  private getOpenFileOfLeaf(leafId: string): TFile | null {
+    const leaf = this.app.workspace.getLeafById(leafId);
+    if (!leaf) return null;
+    if (leaf.view instanceof FileView) return leaf.view.file;
+    const path = leaf.getViewState().state?.file as string | undefined;
+    if (path) {
+      const file = this.app.vault.getAbstractFileByPath(path);
+      if (file instanceof TFile) return file;
+    }
+    return null;
+  }
 }
