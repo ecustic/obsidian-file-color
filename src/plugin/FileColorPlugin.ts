@@ -1,4 +1,4 @@
-import { debounce, MenuItem, Plugin } from 'obsidian'
+import { debounce, MenuItem, Notice, Plugin } from 'obsidian'
 import { SetColorModal } from 'plugin/SetColorModal'
 import { FileColorSettingTab } from 'plugin/FileColorSettingTab'
 
@@ -8,6 +8,9 @@ import { defaultSettings } from 'settings'
 export class FileColorPlugin extends Plugin {
   settings: FileColorPluginSettings = defaultSettings
   saveSettingsInternalDebounced = debounce(this.saveSettingsInternal, 3000, true);
+  // Modification time of data.json when the plugin last read or wrote it.
+  // null means the file did not exist or has not been checked yet.
+  private settingsFileMtime: number | null = null
 
   async onload() {
     await this.loadSettings()
@@ -37,22 +40,31 @@ export class FileColorPlugin extends Plugin {
 
     this.registerEvent(
       this.app.vault.on('rename', async (newFile, oldPath) => {
-        this.settings.fileColors
-          .filter((fileColor) => fileColor.path === oldPath)
-          .forEach((fileColor) => {
+        const renamed = this.settings.fileColors.filter(
+          (fileColor) => fileColor.path === oldPath
+        )
+        // Only write when a colored file moved. Writing on every rename
+        // lets a device with stale settings overwrite the synced file.
+        if (renamed.length > 0) {
+          renamed.forEach((fileColor) => {
             fileColor.path = newFile.path
           })
-        this.saveSettings()
+          await this.saveSettings()
+        }
         this.applyColorStyles()
       })
     )
 
     this.registerEvent(
       this.app.vault.on('delete', async (file) => {
-        this.settings.fileColors = this.settings.fileColors.filter(
+        const remaining = this.settings.fileColors.filter(
           (fileColor) => !fileColor.path.startsWith(file.path)
         )
-        this.saveSettings()
+        if (remaining.length === this.settings.fileColors.length) {
+          return
+        }
+        this.settings.fileColors = remaining
+        await this.saveSettings()
       })
     )
 
@@ -66,6 +78,17 @@ export class FileColorPlugin extends Plugin {
 
   async loadSettings() {
     this.settings = Object.assign({}, defaultSettings, await this.loadData())
+    this.settingsFileMtime = await this.getSettingsFileMtime()
+  }
+
+  // Obsidian calls this when data.json changes on disk outside the app,
+  // for example when Obsidian Sync delivers settings from another device.
+  // Without it the plugin keeps its stale in-memory settings and writes
+  // them back over the synced file on the next save.
+  async onExternalSettingsChange() {
+    await this.loadSettings()
+    this.generateColorStyles()
+    this.applyColorStyles()
   }
 
   async saveSettings(immediate?: boolean) {
@@ -75,8 +98,35 @@ export class FileColorPlugin extends Plugin {
     return this.saveSettingsInternalDebounced();
   }
 
-  private saveSettingsInternal() {
-    return this.saveData(this.settings)
+  private async saveSettingsInternal() {
+    // Refuse to overwrite a file that changed since the plugin last read it.
+    // This covers Obsidian versions without onExternalSettingsChange and the
+    // window between a sync write and the hook being called.
+    if (await this.settingsFileChangedOnDisk()) {
+      await this.onExternalSettingsChange()
+      new Notice(
+        'File Color: settings changed on disk and were reloaded. Your last change was not saved.'
+      )
+      return
+    }
+    await this.saveData(this.settings)
+    this.settingsFileMtime = await this.getSettingsFileMtime()
+  }
+
+  private async getSettingsFileMtime(): Promise<number | null> {
+    const stat = await this.app.vault.adapter.stat(
+      `${this.manifest.dir}/data.json`
+    )
+    return stat?.mtime ?? null
+  }
+
+  private async settingsFileChangedOnDisk(): Promise<boolean> {
+    const mtime = await this.getSettingsFileMtime()
+    return (
+      mtime !== null &&
+      this.settingsFileMtime !== null &&
+      mtime !== this.settingsFileMtime
+    )
   }
 
   generateColorStyles() {

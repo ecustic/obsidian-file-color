@@ -18,15 +18,21 @@ export const debounce = <T extends (...args: Array<unknown>) => unknown>(fn: T) 
 
 export class Plugin {
   app: App
+  manifest: { dir?: string }
 
-  constructor(app?: App) {
+  constructor(app?: App, manifest?: { dir?: string }) {
     this.app = app ?? createMockPluginApp()
+    this.manifest = manifest ?? { dir: '.obsidian/plugins/obsidian-file-color' }
   }
 
   loadData = async () => undefined
   saveData = async (_data: unknown) => undefined
   registerEvent = (_eventRef: unknown) => undefined
   addSettingTab = (_tab: PluginSettingTab) => undefined
+}
+
+export class Notice {
+  constructor(public message: string) {}
 }
 
 export class PluginSettingTab {
@@ -116,6 +122,9 @@ export const createMockPluginApp = () => {
         Promise.all((workspaceEvents[name] ?? []).map((handler) => handler(...args))),
     },
     vault: {
+      adapter: {
+        stat: vi.fn(async (_path: string): Promise<{ mtime: number } | null> => null),
+      },
       on: (name: string, handler: EventHandler) => registerHandler(vaultEvents, name, handler),
       emit: async (name: string, ...args: Array<unknown>) =>
         Promise.all((vaultEvents[name] ?? []).map((handler) => handler(...args))),
