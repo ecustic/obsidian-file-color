@@ -17,6 +17,10 @@ main.js
 
 # test output
 coverage/
+.obsidian-unpacked/
+tests/e2e/test-vaults/
+tests/e2e/test-results/
+playwright-report/
 
 # obsidian
 data.json

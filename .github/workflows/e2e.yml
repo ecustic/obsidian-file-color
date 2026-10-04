@@ -1,0 +1,44 @@
+name: Obsidian E2E
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  e2e:
+    runs-on: macos-26
+    env:
+      OBSIDIAN_VERSION: 1.8.10
+      OBSIDIAN_PATH: /tmp/obsidian/Obsidian.app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download pinned Obsidian
+        run: |
+          curl -L --fail --retry 3 "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}.dmg" -o /tmp/Obsidian.dmg
+          mkdir -p /tmp/obsidian
+          hdiutil attach /tmp/Obsidian.dmg -nobrowse -mountpoint /tmp/obsidian
+      - name: Unpack Obsidian and build plugin
+        run: |
+          bash scripts/setup-obsidian.sh
+          npm run build
+      - name: Run E2E suite
+        run: npm run e2e
+      - name: Upload Playwright diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: obsidian-e2e-diagnostics
+          path: |
+            tests/e2e/test-results/
+            playwright-report/
+          if-no-files-found: ignore
